@@ -1,0 +1,32 @@
+{
+  "name": "xordroid",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "start:dev":  "nodemon bot.js",
+    "start:debug":  "nodemon --inspect bot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaikeMota/xordroid.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MaikeMota/xordroid/issues"
+  },
+  "homepage": "https://github.com/MaikeMota/xordroid#readme",
+  "dependencies": {
+    "console": "^0.7.2",
+    "dotenv": "^8.2.0",
+    "mqtt": "^4.2.6",
+    "obs-websocket-js": "^4.0.2",
+    "tmi.js": "^1.7.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
