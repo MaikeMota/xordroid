@@ -1,17 +1,9 @@
-exports.default = (client, obs, mqtt) => {
-    client.on('message', (target, context, message, isBot) => {
-        if (isBot) return;
-
-        switch (message) {
-            case '!comando':
-                client.say(
-                    target,
-                    `só um teste... básico!`,
-                );
-                break;
-            default:
-                break;
-        }
-    });
-};
-
+exports.default = {
+    command: 'comando',
+    handler: async (channel, client, args) => {
+        await client.say(
+            channel,
+            `só um teste... básico!`,
+        );
+    }
+}

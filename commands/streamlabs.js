@@ -1,6 +1,9 @@
+const OBSWebSocket = require('obs-websocket-js');
+const obs = new OBSWebSocket();
+
 const changeScenes = require("./changeScenes");
 
-exports.default = (client, obs, mqtt) => {
+exports.default = (client) => {
   client.on('message', (target, context, message, isBot) => {
       if (isBot) return;
 

@@ -1,36 +1,58 @@
-exports.default = (client, target, context, message) => {
-  client.on('message', (target, context, message, isBot) => {
-    if (isBot) return;
+const { sendMessage } = require('../utils');
 
-    switch (message) {
-    case '!jpbrab0':
-      client.say(
-        target,
+exports.default = [
+  {
+    command: 'jpbrab0',
+    handler: async (channel, client, args) => {
+      await sendMessage(
+        channel,
+        client,
         `Papai, é você? twitch.tv/jpbrab0`,
       );
-      break;
-    case '!caraio':
-      client.say(
-        target,
-        `Acho que cê ta na live errada Kappa. A certa é essa aqui: twitch.tv/pachicodes`,
+    }
+  },
+  {
+    command: 'caraio',
+    handler: async (channel, client, args) => {
+      await sendMessage(
+        channel,
+        client,
+        getLiveErradaKappaMessage('pachicodes'),
       );
-      break;
-    case '!captura':
-    case '!selvagem':
-      client.say(
-        target,
-        `Acho que cê ta na live errada Kappa. A certa é essa aqui: twitch.tv/pokemaobr`,
+    }
+  },
+  {
+    command: 'captura',
+    handler: async (channel, client, args) => {
+      await sendMessage(
+        channel,
+        client,
+        getLiveErradaKappaMessage('pokemaobr'),
       );
-      break;
-    case '!capturar':
-      client.say(
-        target,
-        `Acho que cê ta na live errada Kappa. A certa é essa aqui: twitch.tv/pokemaobr`,
+    }
+  },
+  {
+    command: 'selvagem',
+    handler: async (channel, client, args) => {
+      await sendMessage(
+        channel,
+        client,
+        getLiveErradaKappaMessage('pokemaobr'),
       );
-      break;
-    default:
-      break;
-      }
-    });
+    }
+  },
+  {
+    command: 'capturar',
+    handler: async (channel, client, args) => {
+      await sendMessage(
+        channel,
+        client,
+        getLiveErradaKappaMessage('pokemaobr'),
+      );
+    }
+  },
+];
 
-};
+function getLiveErradaKappaMessage(targetChannel) {
+  return `Acho que cê ta na live errada Kappa. A certa é essa aqui: twitch.tv/${targetChannel}`;
+}
