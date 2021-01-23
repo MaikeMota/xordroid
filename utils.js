@@ -2,8 +2,8 @@ module.exports = {
     isCommand(possibleCommand) {
         return possibleCommand.startsWith(process.env.COMMAND_PREFIX);
     },
-    sendMessage(channel, client, message) {
-        client.say(
+    async sendMessage(channel, client, message) {
+        await client.say(
             channel,
             message
         );
