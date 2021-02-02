@@ -13,7 +13,7 @@ exports.default = [
   },
   {
     command: 'caraio',
-    handler: async (channel, client, args) => {
+    handler: async (client, channel, requestor, args) => {
       await sendMessage(
         channel,
         client,
@@ -23,7 +23,7 @@ exports.default = [
   },
   {
     command: 'captura',
-    handler: async (channel, client, args) => {
+    handler: async (client, channel, requestor, args) => {
       await sendMessage(
         channel,
         client,
@@ -33,7 +33,7 @@ exports.default = [
   },
   {
     command: 'selvagem',
-    handler: async (channel, client, args) => {
+    handler: async (client, channel, requestor, args) => {
       await sendMessage(
         channel,
         client,
@@ -43,7 +43,7 @@ exports.default = [
   },
   {
     command: 'capturar',
-    handler: async (channel, client, args) => {
+    handler: async (client, channel, requestor, args) => {
       await sendMessage(
         channel,
         client,
