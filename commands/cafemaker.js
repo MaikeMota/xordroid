@@ -1,20 +1,20 @@
-exports.default = (client, obs, mqtt, messages) => {
-  client.on('message', (target, context, message, isBot) => {
-    if (isBot) return;
+const { CAFE_MAKER_NEXT_DATE } = process.env;
 
-    let proxima_data = "06/02/2021"
+exports.default = [
+  {
+    command: 'cafemaker',
+    handler: sendCafeMakerSchedule
+  },
+  {
+    command: 'cafe',
+    handler: sendCafeMakerSchedule
+  }
+]
 
-    switch (message) {
-        case '!cafemaker':
-        case '!cafe':
-            client.say(
-                target,
-                `O Próximo Café Maker será dia ${proxima_data} as 10:00 am - Playlist no youtube  https://bit.ly/ytcafemaker`,
-            );
-            break;
-        default:
-            break;
-    }
-  });
-};
+function sendCafeMakerSchedule(client, channel, requestor, args) {
+  client.say(
+    channel,
+    `O Próximo Café Maker será dia ${CAFE_MAKER_NEXT_DATE} as 10:00 am - Playlist no youtube  https://bit.ly/ytcafemaker`
+  );
+}
 

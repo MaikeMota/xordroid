@@ -1,82 +1,88 @@
 const socialHandlers = [
 ];
-exports.default = (client, obs, mqtt, messages) => {
+exports.default = (client, channel, requestor, args) => {
 
 
-if (process.env.SOCIAL) {
-  socialHandlers.push({
-    command: 'social',
-    handler: (channel, client, args, obs, mqtt) => {
-      client.say(channel, process.env.SOCIAL);
-    },
-  });
-}
-if (process.env.WEB_SITE) {
-  socialHandlers.push({
-    command: 'eu',
-    handler: (channel, client, args, obs, mqtt) => {
-      client.say(channel, process.env.WEB_SITE);
-    }
-  });
-}
-if (process.env.YOUTUBE) {
-  socialHandlers.push({
-    command: 'youtube',
-    handler: (channel, client, args, obs, mqtt) => {
-      client.say(channel, process.env.YOUTUBE);
-      case '!youtube':
-        client.say(target, 'https://bit.ly/canaldokadu');
-        break;
+  if (process.env.SOCIAL) {
+    socialHandlers.push({
+      command: 'social',
+      handler: (client, channel, requestor, args, obs, mqtt) => {
+        client.say(channel, process.env.SOCIAL);
+      },
+    });
+  }
+  if (process.env.WEB_SITE) {
+    socialHandlers.push({
+      command: 'eu',
+      handler: (client, channel, requestor, args, obs, mqtt) => {
+        client.say(channel, process.env.WEB_SITE);
+      }
+    });
+  }
+  if (process.env.YOUTUBE) {
+    socialHandlers.push({
+      command: 'youtube',
+      handler: (client, channel, requestor, args, obs, mqtt) => {
+        client.say(channel, process.env.YOUTUBE);
+      }
+    });
+  }
+  if (process.env.INSTAGRAM) {
+    socialHandlers.push({
+      command: 'instagram',
+      handler: (client, channel, requestor, args, obs, mqtt) => {
+        client.say(channel, process.env.INSTAGRAM);
+      }
+    });
+  }
+  if (process.env.GITHUB) {
+    socialHandlers.push({
+      command: 'github',
+      handler: (client, channel, requestor, args, obs, mqtt) => {
+        client.say(channel, process.env.GITHUB);
+      }
+    });
+  }
+};
 
-      case '!insta':
-      case '!instagram':
-        client.say(target, 'https://www.instagram.com/canaldokadu/');
-        break;
+  exports.default = socialHandlers;
 
-      case '!github':
-        client.say(target, 'https://github.com/kadu/');
-        break;
+  
 
-      case '!lojinha':
-        client.say(target, 'http://kaduzi.us/lojinha');
-        break;
 
-      case '!discord':
-        client.say(target, 'https://discord.gg/wmmTKHeHDJ');
-        break;
+  // case '!youtube':
+  //       client.say(target, 'https://bit.ly/canaldokadu');
+  //       break;
 
-      case '!iotstreamers':
-        client.say(target, 'https://discord.gg/Gk5e5Cx');
-        break;
+  //     case '!insta':
+  //     case '!instagram':
+  //       client.say(target, 'https://www.instagram.com/canaldokadu/');
+  //       break;
 
-      case '!julialabs':
-        client.say(target, 'Discord -> https://discord.gg/qdfaNcPv | Twitch.tv -> https://www.twitch.tv/julialabs | Youtube -> https://www.youtube.com/channel/UChfu9xWITOvsXYLKm7hieSQ');
-        break;
+  //     case '!github':
+  //       client.say(target, 'https://github.com/kadu/');
+  //       break;
 
-      case '!pix':
-        client.say(target, 'Donate com PIX -> http://www.kaduzi.us/pix');
-        break;
+  //     case '!lojinha':
+  //       client.say(target, 'http://kaduzi.us/lojinha');
+  //       break;
 
-      default:
-        break;
-    }
-  });
-}
-if (process.env.INSTAGRAM) {
-  socialHandlers.push({
-    command: 'instagram',
-    handler: (channel, client, args, obs, mqtt) => {
-      client.say(channel, process.env.INSTAGRAM);
-    }
-  });
-}
-if (process.env.GITHUB) {
-  socialHandlers.push({
-    command: 'github',
-    handler: (channel, client, args, obs, mqtt) => {
-      client.say(channel, process.env.GITHUB);
-    }
-  });
-}
+  //     case '!discord':
+  //       client.say(target, 'https://discord.gg/wmmTKHeHDJ');
+  //       break;
 
-exports.default = socialHandlers;
+  //     case '!iotstreamers':
+  //       client.say(target, 'https://discord.gg/Gk5e5Cx');
+  //       break;
+
+  //     case '!julialabs':
+  //       client.say(target, 'Discord -> https://discord.gg/qdfaNcPv | Twitch.tv -> https://www.twitch.tv/julialabs | Youtube -> https://www.youtube.com/channel/UChfu9xWITOvsXYLKm7hieSQ');
+  //       break;
+
+  //     case '!pix':
+  //       client.say(target, 'Donate com PIX -> http://www.kaduzi.us/pix');
+  //       break;
+
+  //     default:
+  //       break;
+  //   }
