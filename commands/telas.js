@@ -1,4 +1,4 @@
-exports.default = (client, obs, mqtt) => {
+exports.default = (client, obs, mqtt, messages) => {
   let currentScene;
   let obsIsConnected;
 
@@ -27,8 +27,8 @@ exports.default = (client, obs, mqtt) => {
 
   obs.on("ConnectionClosed", (data) => {
     obsIsConnected = false;
-    mqtt.publish("xordroid/weather/off", "");
-    mqtt.publish("wled/158690", "OFF");
+    // mqtt.publish("xordroid/weather/off", "");
+    // mqtt.publish("wled/158690", "OFF");
     setTimeout(obsConnection,60000);
   });
 
@@ -90,6 +90,7 @@ exports.default = (client, obs, mqtt) => {
       case '!screen':
         changeScene("tela");
         break;
+      case '!cam2':
       case '!proto':
       case '!protoboard':
       case '!breadboard':
