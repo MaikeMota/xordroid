@@ -1,80 +1,27 @@
-exports.default = (client, obs, mqtt, messages) => {
-  let showed = [];
+const { TWITCH_EVENTS } = require('../twitch.events');
+const { sendMessage } = require('../utils');
 
-  client.on('join', (channel, username, self) => {
-    let streamers = [
-    'daniel_dev',
-    'webmat1',
-    'pokemaobr',
-    'tearing5',
-    'xtecna',
-    'dornellestv',
-    'henriquevilelamusic',
-    'project_juan',
-    'pachicodes',
-    'mechanicallydev',
-    'corujaodev',
-    'julialabs',
-    'chicocodes',
-    'davibusanello',
-    'cafecodes',
-    'Princess_League',
-    'pixlrose',
-    'maikemota',
-    'jpbrab0',
-    'levxyca',
-    'chicaocodes',
-    'rostyxz',
-    'edersondeveloper',
-    'zerotoherodev',
-    'cabracast',
-    'baldengineer',
-    'griloviscky',
-    'bittoin',
-    'canturil',
-    'railanepassos',
-    'programadorbinario',
-    'kastr0walker',
-    'stormgirlbr',
-    'bgfow',
-    'victorzonta',
-    'carpa_flamejante',
-    'racerxdl',
-    'bedabliu',
-    'Carol_de_Abreu',
-    'arig4m3r',
-    'devgiordane',
-    'alecams',
-    'leitche',
-    'paulobeckman',
-    'tonhocodes',
-    'morgiovanelli',
-    'escslabtech',
-    'altthabs',
-    'wesleylab',
-    'torrevorpal',
-    'fer2easy',
-    'guridarth',
-    'rafabandoni',
-    'casadodev',
-    'xdidadev',
-    'profbrunolopes',
-    'devNelson_',
-    'guina_o_artesao',
-    'tairritadotio',
-    'indice_do_conhecimento',
-    'vitorbgs'
-  ];
+const { SH_SO_SUPPORTED_STREAMERS } = process.env;
 
-    if(streamers.includes(username)) {
-      if(!showed.includes(username)) {
-        if(messages.length <= 2) {
-          messages.push(`Ola ${username}!`);
-          client.say(client.channels[0], `!sh-so @${username}`);
-          showed.push(username);
-        }
-      }
+const streamers = (SH_SO_SUPPORTED_STREAMERS || "")
+  .split(',')
+  .reduce((prev, current, index) => {
+    prev[current] = false;
+    return prev;
+  }, {});
+
+exports.default = {
+  event: TWITCH_EVENTS.JOIN,
+  command: 'sh-so-handler',
+  handler: async (client, channel, username) => {
+    const supportedStreamer = !!streamers[username];
+    if (supportedStreamer) {
+      if (!streamers[username])
+        sendMessage(channel, client, `Opa! ${username} na área, já conhece o canal?`);
+        sendMessage(channel, client, `!sh-so @${username}`);
+        streamers[username] = true;
+    } else { 
+      console.log(`${username} joined the streaming chat.`);
     }
-  });
-};
-
+  }
+}
