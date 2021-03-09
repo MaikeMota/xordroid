@@ -1,6 +1,6 @@
 const { get } = require('request-promise');
 const translate = require('translate');
-const { sendMessage, sendWhisperMessage } = require('../utils');
+const { sendWhisperMessage } = require('../utils');
 
 const { TRANSLATE_ENGINE, TRANSLATE_ENGINE_KEY } = process.env;
 
@@ -33,6 +33,4 @@ async function sendActivityRecomendation(client, channel, requestor, args) {
         requestor,
         `Segue a dica! ${translated} (${response.activity})`
     );
-
-    
 }
