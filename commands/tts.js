@@ -66,7 +66,7 @@ async function playTTS(message) {
   try {
     const ttsTempFile = path.resolve('output.m4a');
     await writeFile(ttsTempFile, response.audioContent);
-    await sound.play(ttsTempFile);
+    await sound.play(ttsTempFile, 1);
     console.log("done");
   } catch (error) {
     console.error('Error whiling reproducing TTS sound file', error);
