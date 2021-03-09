@@ -1,33 +1,35 @@
-var request = require('request-promise');
-const dotenv = require('dotenv');
-dotenv.config();
+const request = require('request-promise');
 
+const { sendMessage } = require('../utils');
 
-var id = "UC3pkYuCPdMK7aEqYXcatzNQ"; //channelID
-var key = process.env.GOOGLE_KEY;
-var url = "https://www.googleapis.com/youtube/v3/channels?part=statistics&id=" + id + "&key=" + key;
+const { YOUTUBE_API_KEY, YOUTUBE_CHANNEL_ID, YOUTUBE_OUTPUT_LOCAL } = process.env;
+const url = "https://www.googleapis.com/youtube/v3/channels?part=statistics&id=" + YOUTUBE_CHANNEL_ID + "&key=" + YOUTUBE_API_KEY;
 
-let getCounter = async (channelUrl) => {
+const getCounter = async (channelUrl) => {
   let response = await request({
     method: 'GET',
     url: url
   });
   var json = JSON.parse(response);
-  return(json.items[0].statistics.subscriberCount);
+  return (json.items[0].statistics.subscriberCount);
 }
 
-exports.default = (client, obs, mqtt, messages) => {
-    client.on('message', async (target, context, message, isBot) => {
-        if (isBot) return;
+exports.default = {
+  command: 'ytcount',
+  handler: async (client, channel, requestor, args) => {
+    const contador = await getCounter();
+    // TODO escolher entre matriz de leds, canal ou ambos
+    switch (YOUTUBE_OUTPUT_LOCAL) {
+      case 'CHAT':
+        await sendMessage(channel, client, `Valeu por chegar a ${contador} inscritos no youtube \\o/`);
+        break;
+      case 'MATRIX':
+        // messages.push(`Valeu por chegar a ${contador} inscritos no youtube \\o/`);
+        break;
+      default:
+        console.error(`${YOUTUBE_OUTPUT_LOCAL} is not a valid output for YT counter.`)
 
-        switch (message) {
-            case '!ytcount':
-                contador = await getCounter();
-                messages.push(`Valeu por chegar a ${contador} inscritos no youtube \\o/`);
-                break;
-            default:
-                break;
-        }
-    });
+    }
+  }
 };
 
