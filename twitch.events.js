@@ -1,0 +1,6 @@
+const TWITCH_EVENTS = {
+    MESSAGE: 'MESSAGE',
+    JOIN: 'JOIN'
+}
+
+exports.TWITCH_EVENTS = TWITCH_EVENTS;
