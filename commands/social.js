@@ -1,88 +1,94 @@
 const socialHandlers = [
 ];
-exports.default = (client, channel, requestor, args) => {
+// TODO: Read from a config file/database
+if (process.env.SOCIAL) {
+  socialHandlers.push({
+    command: 'social',
+    handler: (client, channel, requestor, args) => {
+      client.say(channel, process.env.SOCIAL);
+    },
+  });
+}
+if (process.env.WEB_SITE) {
+  socialHandlers.push({
+    command: 'eu',
+    handler: (client, channel, requestor, args) => {
+      client.say(channel, process.env.WEB_SITE);
+    }
+  });
+}
+if (process.env.YOUTUBE) {
+  socialHandlers.push({
+    command: 'youtube',
+    handler: (client, channel, requestor, args) => {
+      client.say(channel, process.env.YOUTUBE);
+    }
+  });
+}
+if (process.env.INSTAGRAM) {
+  socialHandlers.push({
+    command: 'instagram',
+    handler: (client, channel, requestor, args) => {
+      client.say(channel, process.env.INSTAGRAM);
+    }
+  });
+  socialHandlers.push({
+    command: 'insta',
+    handler: (client, channel, requestor, args) => {
+      client.say(channel, process.env.INSTAGRAM);
+    }
+  });
+}
+if (process.env.GITHUB) {
+  socialHandlers.push({
+    command: 'github',
+    handler: (client, channel, requestor, args) => {
+      client.say(channel, process.env.GITHUB);
+    }
+  });
+}
 
+if (process.env.LOJINHA) {
+  socialHandlers.push({
+    command: 'lojinha',
+    handler: (client, channel, requestor, args) => {
+      client.say(channel, process.env.LOJINHA);
+    }
+  });
+}
 
-  if (process.env.SOCIAL) {
-    socialHandlers.push({
-      command: 'social',
-      handler: (client, channel, requestor, args, obs, mqtt) => {
-        client.say(channel, process.env.SOCIAL);
-      },
-    });
-  }
-  if (process.env.WEB_SITE) {
-    socialHandlers.push({
-      command: 'eu',
-      handler: (client, channel, requestor, args, obs, mqtt) => {
-        client.say(channel, process.env.WEB_SITE);
-      }
-    });
-  }
-  if (process.env.YOUTUBE) {
-    socialHandlers.push({
-      command: 'youtube',
-      handler: (client, channel, requestor, args, obs, mqtt) => {
-        client.say(channel, process.env.YOUTUBE);
-      }
-    });
-  }
-  if (process.env.INSTAGRAM) {
-    socialHandlers.push({
-      command: 'instagram',
-      handler: (client, channel, requestor, args, obs, mqtt) => {
-        client.say(channel, process.env.INSTAGRAM);
-      }
-    });
-  }
-  if (process.env.GITHUB) {
-    socialHandlers.push({
-      command: 'github',
-      handler: (client, channel, requestor, args, obs, mqtt) => {
-        client.say(channel, process.env.GITHUB);
-      }
-    });
-  }
-};
+if (process.env.DISCORD) {
+  socialHandlers.push({
+    command: 'discord',
+    handler: (client, channel, requestor, args) => {
+      client.say(channel, process.env.DISCORD);
+    }
+  });
+}
 
-  exports.default = socialHandlers;
+if (process.env.IOT_STREAMERS) {
+  socialHandlers.push({
+    command: 'iotstreamers',
+    handler: (client, channel, requestor, args) => {
+      client.say(channel, process.env.IOT_STREAMERS);
+    }
+  });
+}
 
-  
-
-
-  // case '!youtube':
-  //       client.say(target, 'https://bit.ly/canaldokadu');
-  //       break;
-
-  //     case '!insta':
-  //     case '!instagram':
-  //       client.say(target, 'https://www.instagram.com/canaldokadu/');
-  //       break;
-
-  //     case '!github':
-  //       client.say(target, 'https://github.com/kadu/');
-  //       break;
-
-  //     case '!lojinha':
-  //       client.say(target, 'http://kaduzi.us/lojinha');
-  //       break;
-
-  //     case '!discord':
-  //       client.say(target, 'https://discord.gg/wmmTKHeHDJ');
-  //       break;
-
-  //     case '!iotstreamers':
-  //       client.say(target, 'https://discord.gg/Gk5e5Cx');
-  //       break;
-
-  //     case '!julialabs':
-  //       client.say(target, 'Discord -> https://discord.gg/qdfaNcPv | Twitch.tv -> https://www.twitch.tv/julialabs | Youtube -> https://www.youtube.com/channel/UChfu9xWITOvsXYLKm7hieSQ');
-  //       break;
-
-  //     case '!pix':
-  //       client.say(target, 'Donate com PIX -> http://www.kaduzi.us/pix');
-  //       break;
-
-  //     default:
-  //       break;
-  //   }
+if (process.env.JULIA_LABS) {
+  socialHandlers.push({
+    command: 'julialabs',
+    handler: (client, channel, requestor, args) => {
+      client.say(channel, process.env.JULIA_LABS);
+    }
+  });
+}
+if (process.env.PIX) {
+  socialHandlers.push({
+    command: 'pix',
+    handler: (client, channel, requestor, args) => {
+      client.say(channel, process.env.PIX);
+    }
+  });
+}
+exports.default = socialHandlers;
