@@ -15,9 +15,9 @@ module.exports = {
     async sendWhisperMessage(client, username, ...messages) { 
         if(messages) { 
             messages.forEach(async message => { 
+                // TODO: Handle messages greater than 500 caracteres!
                 await client.whisper(username, message);
-            })
+            });
         }
-
     }
 }
