@@ -27,6 +27,8 @@ const botSchema = new mongoose.Schema({
 	points: Number
 });
 
+const { TWITCH_EVENTS } = require('./twitch.events');
+
 // const botDB = mongoose.model('BOT', botSchema);
 
 // const silence = new botDB({ userid: 'Silence 17', points: 10 });
@@ -47,21 +49,47 @@ const mqtt_options = {
 const commandHandlers = {
 };
 
-const validateAndRegisterCommand = async (requiredCommandFile, file) => {
-	const { command, handler } = requiredCommandFile;
-	if (command && handler) {
-		commandHandlers[command] = handler;
-		console.info(`'${COMMAND_PREFIX}${command}' loaded!`);
-	} else {
-		console.warn(`[${file}] <--- Arquivo não contem um command e um handler válido.`);
+const joinHandlers = {}
+
+function validateAndRegisterHandler(requiredHandlerFile, file) {
+
+	const { event, command, handler } = requiredHandlerFile;
+
+	switch (event) {
+		case TWITCH_EVENTS.MESSAGE:
+		case undefined: {
+			if (command && handler) {
+				commandHandlers[command] = handler;
+				console.info(`[MESSAGE]'${COMMAND_PREFIX}${command}' handler loaded!`);
+			} else {
+				console.warn(`[${file}] <--- Arquivo não contem um command handler válido.`);
+			}
+			break;
+		}
+		case TWITCH_EVENTS.JOIN: {
+			if (handler) {
+				joinHandlers[command] = handler;
+				console.info(`'[JOIN]${command}' handler loaded!`);
+			} else {
+				console.warn(`[${file}] <--- Arquivo não contem um join handler válido.`);
+			}
+		}
 	}
 }
 
 // const WELCOME_MESSAGE = "Olá pessoas, eu sou o XORDroid, manda um !comandos ai no chat e veja minhas funcionalidades ;D";
 const WELCOME_MESSAGE = 'ON!';
-const handleJoinEvent = (channel, username, self) => {
+const handleJoinEvent = async (channel, username, self) => {
 	if (self) {
 		client.say(channel, WELCOME_MESSAGE);
+	} else {
+		for (const key of Object.keys(joinHandlers)) {
+			try {
+				await joinHandlers[key](client, channel, username);
+			}catch( e) { 
+				console.error(`Ocorreu um erro ao tentar executar o joinHandler [${key}]`)
+			}
+		}
 	}
 };
 
@@ -149,9 +177,9 @@ readdirSync(commandFolder)
 		const filePath = `${commandFolder}/${file}`;
 		const requiredCommandFile = require(filePath).default;
 		if (requiredCommandFile instanceof Array) {
-			requiredCommandFile.forEach(rcf => validateAndRegisterCommand(rcf, filePath));
+			requiredCommandFile.forEach(rcf => validateAndRegisterHandler(rcf, filePath));
 		} else {
-			validateAndRegisterCommand(requiredCommandFile, filePath);
+			validateAndRegisterHandler(requiredCommandFile, filePath);
 		}
 	});
 
