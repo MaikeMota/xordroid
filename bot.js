@@ -15,35 +15,6 @@ const MQTT = require("mqtt");
 
 const mongoose = require('mongoose');
 
-const sound = require("sound-play");
-const textToSpeech = require('@google-cloud/text-to-speech');
-
-
-const clienttts = new textToSpeech.TextToSpeechClient();
-
-async function playTTS(message) {
-	isPlayingTTS = true;
-	const text = message.msg;
-	const inputType = message.inputType;
-
-	const request = {
-		input: { [inputType]: text },
-		voice: { languageCode: message.lang, ssmlGender: 'NEUTRAL' },
-		audioConfig: { audioEncoding: 'MP3' },
-	};
-
-	const [response] = await clienttts.synthesizeSpeech(request);
-	const writeFile = util.promisify(fs.writeFile);
-	await writeFile('output.mp3', response.audioContent, 'binary');
-	sound.play(`${__dirname}\\output.mp3`).then((response) => {
-		console.log("done");
-		isPlayingTTS = false;
-	}).catch((error) => {
-		isPlayingTTS = false;
-		console.error(error);
-	});
-}
-
 // mongoose.connect('mongodb://xordroid_points:TbfUhRuxEvqvA3j4@localhost:27018/admin', { useNewUrlParser: true });
 // const db = mongoose.connection;
 // db.on('error', console.error.bind(console, 'connection error:'));
@@ -64,8 +35,7 @@ const botSchema = new mongoose.Schema({
 // console.log("******************");
 // silence.save();
 
-const Utils = require('./utils');
-const { sendMessage, sendWhisperMessage } = require('./utils');
+const { sendWhisperMessage, isCommand } = require('./utils');
 
 const mqtt_options = {
 	host: MQTT_HOST,
@@ -87,7 +57,8 @@ const validateAndRegisterCommand = async (requiredCommandFile, file) => {
 	}
 }
 
-const WELCOME_MESSAGE = "Olá pessoas, eu sou o XORDroid, manda um !comandos ai no chat e veja minhas funcionalidades ;D";
+// const WELCOME_MESSAGE = "Olá pessoas, eu sou o XORDroid, manda um !comandos ai no chat e veja minhas funcionalidades ;D";
+const WELCOME_MESSAGE = 'ON!';
 const handleJoinEvent = (channel, username, self) => {
 	if (self) {
 		client.say(channel, WELCOME_MESSAGE);
@@ -99,7 +70,7 @@ const handleMessageEvent = async (channel, tags, message, self) => {
 		return;
 	const requestor = tags.username;
 	let [command, ...args] = message.split(" "); // split message
-	if (Utils.isCommand(command)) {
+	if (isCommand(command)) {
 		command = command.replace(COMMAND_PREFIX, '');
 		const commandHandler = commandHandlers[command];
 		if (commandHandler) {
@@ -117,9 +88,8 @@ const handleMessageEvent = async (channel, tags, message, self) => {
 var porta;
 var messages = [];
 var commandQueue = [];
-var ttsQueue = [];
+
 var timerIsOn = true;
-var isPlayingTTS = false;
 const mqtt = MQTT.connect(mqtt_options);
 
 mqtt.on('connect', function () {
@@ -170,13 +140,6 @@ setInterval(() => {
 	}
 }, 1500);
 
-setInterval(async () => {
-	if ((ttsQueue.length > 0) && (!isPlayingTTS)) {
-		let tts = ttsQueue.shift();
-		await playTTS(tts);
-	}
-}, 2500);
-
 const commandFolder = join(__dirname, COMMAND_FOLDER_PATH || '/commands');
 console.info(`Loading commands from folder ${commandFolder}`);
 
@@ -192,11 +155,10 @@ readdirSync(commandFolder)
 		}
 	});
 
-commandHandlers['ajuda'] = commandHandlers['help'] = (client, channel, requestor, args) => {
-	sendWhisperMessage(client, requestor, `Comandos disponíveis:`,
+commandHandlers['ajuda'] = commandHandlers['help'] = async (client, channel, requestor, args) => {
+	await sendWhisperMessage(client, requestor, `Comandos disponíveis:`,
 		Object.keys(commandHandlers)
 			.map(command => `${COMMAND_PREFIX}${command}`)
-			.join('\n')
 	);
 }
 
